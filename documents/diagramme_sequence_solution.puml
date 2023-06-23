@@ -1,0 +1,25 @@
+@startuml
+
+title Diagramme de séquence des solutions de réduction de couleurs
+
+activate Main
+
+Main -> SolutionConcrete: reductionCouleurs(image, nbCouleurs)
+activate SolutionConcrete
+
+SolutionConcrete -> SolutionConcrete: rassemblerCouleurs(image)
+activate SolutionAbstract
+SolutionConcrete -> SolutionConcrete: selectionnerCouleursReprésentative() : Couleur[]
+SolutionAbstract <- SolutionConcrete: remplacerCouleurs(image, couleursRepresentatives)
+
+loop Pour chaque pixel de l'image
+    SolutionAbstract -> SolutionAbstract: remplacerCouleur(couleur, couleursRepresentatives)
+end
+
+
+SolutionAbstract --> SolutionConcrete: imageReduite
+deactivate SolutionAbstract
+SolutionConcrete --> Main: imageReduite
+deactivate SolutionConcrete
+
+@enduml
