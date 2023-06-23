@@ -88,6 +88,6 @@ public class Solution_v5 extends Solution{
                 histogramme.put(quantizedColor, histogramme.getOrDefault(quantizedColor, 0) + 1);
             }
         }
-        System.out.println(histogramme.size());
+        return histogramme;
     }
 }
