@@ -1,3 +1,5 @@
+package solution_SAE;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -87,60 +89,31 @@ public class MainCluster {
 
         Color[] couleursRepresentatives = new Color[nbCouleurs];
 
-
-
-
         for (int i = 0; i < Math.min(nbCouleurs, entries.size()); i++) {
             couleursRepresentatives[i] = new Color(entries.get(i).getKey());
 
         }
 
+
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
-
         System.out.println("Temps écoulé : " + elapsedTime + " millisecondes");
 
         startTime = System.currentTimeMillis();
 
-
         for (int i = 0; i < nbRepetitions; i++) {
-            couleursRepresentatives = boucle(height,width,couleursRepresentatives,image,nbCouleurs);
+            couleursRepresentatives = KMeans(height,width,couleursRepresentatives,image,nbCouleurs);
         }
 
         endTime = System.currentTimeMillis();
         elapsedTime = endTime - startTime;
-
         System.out.println("Temps écoulé : " + elapsedTime + " millisecondes");
+
 
         startTime = System.currentTimeMillis();
 
+        BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
 
-        BufferedImage imageReduite = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Color pixelColor = new Color(image.getRGB(x, y));
-
-                // Choix de la couleur la plus proche dans le tableau
-                Color closestColor = couleursRepresentatives[0];
-                //Initialisation du premier écart à partir de la premiere couleur
-                double minDistance = calculDistance(pixelColor, closestColor);
-
-                //On regarde la différence de distance entre la prochaine couleur et la couleur du pixel
-                for (int i = 1; i < couleursRepresentatives.length; i++) {
-                    //On regarde la différence de distance entre la prochaine couleur et la couleur du pixel
-                    double distance = calculDistance(pixelColor, couleursRepresentatives[i]);
-
-                    //On regarde de quelle couleur le pixel est le plus proche
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestColor = couleursRepresentatives[i];
-                    }
-                }
-
-                imageReduite.setRGB(x, y, closestColor.getRGB());
-            }
-        }
         endTime = System.currentTimeMillis();
         elapsedTime = endTime - startTime;
 
@@ -155,7 +128,7 @@ public class MainCluster {
                 + Math.pow(origine.getBlue() - destination.getBlue(), 2);
     }
 
-    public static Color[] boucle(int height, int width, Color[] couleursRepresentatives, BufferedImage image, int nbCouleurs ){
+    public static Color[] KMeans(int height, int width, Color[] couleursRepresentatives, BufferedImage image, int nbCouleurs ){
         Map<Integer, ArrayList<Integer>> histogramme = new HashMap<>();
 
 
@@ -218,6 +191,41 @@ public class MainCluster {
         }
 
         return couleursRepresentatives2;
+    }
+
+
+    /**
+     * Transforme les couleurs d'une image par les couleurs les plus proches données
+     * @param image L'image à transformer
+     * @param couleursRepresentatives Les couleurs à utiliser
+     * @return L'image transformée
+     */
+    public static BufferedImage remplacerCouleurs(BufferedImage image, Color[] couleursRepresentatives){
+        int width = image.getWidth();
+        int height = image.getHeight();
+        // Remplacement des couleurs des pixels par les couleurs représentatives les plus proches
+        BufferedImage imageReduite = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color pixelColor = new Color(image.getRGB(x, y));
+                // Choix de la couleur la plus proche dans le tableau
+                Color closestColor = couleursRepresentatives[0];
+                //Initialisation du premier écart à partir de la premiere couleur
+                double minDistance = calculDistance(pixelColor, closestColor);
+                //On regarde la différence de distance entre la prochaine couleur et la couleur du pixel
+                for (int i = 1; i < couleursRepresentatives.length; i++) {
+                    //On regarde la différence de distance entre la prochaine couleur et la couleur du pixel
+                    double distance = calculDistance(pixelColor, couleursRepresentatives[i]);
+                    //On regarde de quelle couleur le pixel est le plus proche
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestColor = couleursRepresentatives[i];
+                    }
+                }
+                imageReduite.setRGB(x, y, closestColor.getRGB());
+            }
+        }
+        return imageReduite;
     }
 
 
