@@ -16,8 +16,8 @@ public class Main_TP3_Q3 {
             System.out.println("Veuillez spécifier 2 arguments :");
             System.out.println("    - le chemin vers l'image à traiter ('images_etudiants/copie.png' par default)");
             System.out.println("    - le nombre de couleurs à conserver");
-            imagePath = "images_etudiants/copie.png";
-            nbCouleurs = 20;
+            imagePath = "images_etudiants/originale.jpg";
+            nbCouleurs = 10;
         }
         else {
             imagePath = args[0];
@@ -40,28 +40,54 @@ public class Main_TP3_Q3 {
             return;
         }
 
+        long startTime = System.currentTimeMillis();
+
         // Méthode 1
         Solution solution_v1 = new Solution_v1();
         // Calculs sur image
         BufferedImage nImageV1 = solution_v1.reductionCouleurs(image, nbCouleurs);
         //Sauvegarde image
-        ImageIO.write(nImageV1, extension.toUpperCase(), new File(imagePath+"ReduiteV1_"+nbCouleurs+"."+extension));
+        ImageIO.write(nImageV1, extension.toUpperCase(), new File(imagePath.split("\\.")[0]+"ReduiteV1_"+nbCouleurs+"."+extension));
 
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println("Temps écoulé V1 : " + elapsedTime + " millisecondes");
+
+        startTime = System.currentTimeMillis();
         // Méthode 2
         Solution solution_v2 = new Solution_v2();
         BufferedImage nImagev2 =  solution_v2.reductionCouleurs(image, nbCouleurs);
-        ImageIO.write(nImagev2, extension.toUpperCase(), new File(imagePath+"ReduiteV2_"+nbCouleurs+"."+extension));
+        ImageIO.write(nImagev2, extension.toUpperCase(), new File(imagePath.split("\\.")[0]+"ReduiteV2_"+nbCouleurs+"."+extension));
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
+        System.out.println("Temps écoulé V2 : " + elapsedTime + " millisecondes");
 
+        startTime = System.currentTimeMillis();
         // Méthode 3
-
         Solution solution_v3 = new Solution_v3();
         BufferedImage nImagev3 =  solution_v3.reductionCouleurs(image, nbCouleurs);
-        ImageIO.write(nImagev3, extension.toUpperCase(), new File(imagePath+"ReduiteV3_"+nbCouleurs+"."+extension));
+        ImageIO.write(nImagev3, extension.toUpperCase(), new File(imagePath.split("\\.")[0]+"ReduiteV3_"+nbCouleurs+"."+extension));
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
+        System.out.println("Temps écoulé V3 : " + elapsedTime + " millisecondes");
 
+        startTime = System.currentTimeMillis();
         // Méthode 4
         Solution solution_v4 = new Solution_v4();
         BufferedImage nImagev4 =  solution_v4.reductionCouleurs(image, nbCouleurs);
-        ImageIO.write(nImagev4, extension.toUpperCase(), new File(imagePath+"ReduiteV4_"+nbCouleurs+"."+extension));
+        ImageIO.write(nImagev4, extension.toUpperCase(), new File(imagePath.split("\\.")[0]+"ReduiteV4_"+nbCouleurs+"."+extension));
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
+        System.out.println("Temps écoulé V4 : " + elapsedTime + " millisecondes");
+
+        startTime = System.currentTimeMillis();
+        // Méthode 5
+        Solution solution_v5 = new Solution_v5();
+        BufferedImage nImagev5 =  solution_v5.reductionCouleurs(image, nbCouleurs);
+        ImageIO.write(nImagev5, extension.toUpperCase(), new File(imagePath.split("\\.")[0]+"ReduiteV5_"+nbCouleurs+"."+extension));
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
+        System.out.println("Temps écoulé V5 : " + elapsedTime + " millisecondes");
     }
 
 

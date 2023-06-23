@@ -10,6 +10,7 @@ import java.awt.Color;
 
 public class MainCluster {
     public static void main(String[] args) throws IOException {
+
         int nbCouleurs = 10;
         int nbRepetitions = 30;
         String img = "./images_etudiants/animaux/dauphin_smll";
@@ -17,10 +18,13 @@ public class MainCluster {
 
         BufferedImage image = ImageIO.read(new File(img+"."+extension));
 
+        long startTime = System.currentTimeMillis();
 
         BufferedImage nImageV1 = reductionCouleurs(image, nbCouleurs, nbRepetitions);
         ImageIO.write(nImageV1, extension.toUpperCase(), new File(img+"ReduiteCluster_"+nbCouleurs+"_"+nbRepetitions+"."+extension));
-
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println("Temps écoulé VKMeans : " + elapsedTime + " millisecondes");
 
         //Chargement image
 
@@ -42,7 +46,6 @@ public class MainCluster {
 
 
     public static BufferedImage reductionCouleurs(BufferedImage image, int nbCouleurs, int nbRepetitions){
-        long startTime = System.currentTimeMillis();
         Map<Integer, Integer> histogramme = new HashMap<>();
         int width = image.getWidth();
         int height = image.getHeight();
@@ -95,29 +98,11 @@ public class MainCluster {
         }
 
 
-        long endTime = System.currentTimeMillis();
-        long elapsedTime = endTime - startTime;
-        System.out.println("Temps écoulé : " + elapsedTime + " millisecondes");
-
-        startTime = System.currentTimeMillis();
-
         for (int i = 0; i < nbRepetitions; i++) {
             couleursRepresentatives = KMeans(height,width,couleursRepresentatives,image,nbCouleurs);
         }
 
-        endTime = System.currentTimeMillis();
-        elapsedTime = endTime - startTime;
-        System.out.println("Temps écoulé : " + elapsedTime + " millisecondes");
-
-
-        startTime = System.currentTimeMillis();
-
         BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
-
-        endTime = System.currentTimeMillis();
-        elapsedTime = endTime - startTime;
-
-        System.out.println("Temps écoulé : " + elapsedTime + " millisecondes");
 
         return imageReduite;
     }
