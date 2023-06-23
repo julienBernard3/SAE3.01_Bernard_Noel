@@ -18,39 +18,7 @@ public class Solution_v4 extends Solution{
 
         // Regroupement des couleurs par fréquence
         // On utilise une TreeMap pour trier les couleurs
-        Map<Integer, Integer> histogramme = new TreeMap<>();
-        int width = image.getWidth();
-        int height = image.getHeight();
-
-        double binSize = 2.00000; // Taille de chaque intervalle de couleur (en binaire) (<256)
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Color colorPixel = new Color(image.getRGB(x, y));
-
-                // Permet de regrouper les couleurs par intervalle
-                double red = (colorPixel.getRed() / binSize);
-                double green = (colorPixel.getGreen() / binSize) ;
-                double blue = (colorPixel.getBlue() / binSize) ;
-
-                int redInt = (int) (Math.round(red) * binSize);
-                int greenInt = (int) (Math.round(green) * binSize);
-                int blueInt = (int) (Math.round(blue) * binSize);
-                if (redInt>255){
-                    redInt = 255;
-                }
-                if (greenInt>255){
-                    greenInt = 255;
-                }
-                if (blueInt>255){
-                    blueInt = 255;
-                }
-                // Stockage de la couleur sous forme d'entier
-                int quantizedColor = (redInt << 16) | (greenInt << 8) | blueInt;
-
-                histogramme.put(quantizedColor, histogramme.getOrDefault(quantizedColor, 0) + 1);
-            }
-        }
-        System.out.println(histogramme.size());
+        Map<Integer, Integer> histogramme = rassemblerCouleurs(image);
 
         // Taille totale de l'échantillon (la somme des fréquences)
         int tailleEchantillon = histogramme.size();
@@ -84,5 +52,43 @@ public class Solution_v4 extends Solution{
 
         BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
         return imageReduite;
+    }
+
+    @Override
+    public Map<Integer, Integer> rassemblerCouleurs(BufferedImage image) {
+        // On utilise une TreeMap pour trier les couleurs
+        Map<Integer, Integer> histogramme = new TreeMap<>();
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        double binSize = 2.00000; // Taille de chaque intervalle de couleur (en binaire) (<256)
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color colorPixel = new Color(image.getRGB(x, y));
+
+                // Permet de regrouper les couleurs par intervalle
+                double red = (colorPixel.getRed() / binSize);
+                double green = (colorPixel.getGreen() / binSize) ;
+                double blue = (colorPixel.getBlue() / binSize) ;
+
+                int redInt = (int) (Math.round(red) * binSize);
+                int greenInt = (int) (Math.round(green) * binSize);
+                int blueInt = (int) (Math.round(blue) * binSize);
+                if (redInt>255){
+                    redInt = 255;
+                }
+                if (greenInt>255){
+                    greenInt = 255;
+                }
+                if (blueInt>255){
+                    blueInt = 255;
+                }
+                // Stockage de la couleur sous forme d'entier
+                int quantizedColor = (redInt << 16) | (greenInt << 8) | blueInt;
+
+                histogramme.put(quantizedColor, histogramme.getOrDefault(quantizedColor, 0) + 1);
+            }
+        }
+        return histogramme;
     }
 }

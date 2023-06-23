@@ -1,0 +1,39 @@
+@startuml
+top to bottom direction
+
+class Solution {
+    + reductionCouleurs(image: BufferedImage, nbCouleurs: int): BufferedImage
+    + calculDistance(origine: Color, destination: Color): double
+    + remplacerCouleurs(image: BufferedImage, couleursRepresentatives: Color[]): BufferedImage
+}
+
+class Solution_v1 {
+    + reductionCouleurs(image: BufferedImage, nbCouleurs: int): BufferedImage
+}
+
+class Solution_v2 {
+    + reductionCouleurs(image: BufferedImage, nbCouleurs: int): BufferedImage
+}
+
+class Solution_v3 {
+    + reductionCouleurs(image: BufferedImage, nbCouleurs: int): BufferedImage
+}
+
+class Solution_v4 {
+    + reductionCouleurs(image: BufferedImage, nbCouleurs: int): BufferedImage
+}
+
+class Main_TP3_Q3 {
+    + main(args: String[]): void
+}
+
+Solution <|--- Solution_v1
+Solution <|--- Solution_v2
+Solution <|--- Solution_v3
+Solution <|--- Solution_v4
+Main_TP3_Q3 --> Solution_v1
+Main_TP3_Q3 --> Solution_v2
+Main_TP3_Q3 ----> Solution_v3
+Main_TP3_Q3 ----> Solution_v4
+
+@enduml

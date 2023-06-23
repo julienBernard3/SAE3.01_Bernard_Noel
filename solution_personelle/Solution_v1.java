@@ -17,7 +17,24 @@ public class Solution_v1 extends Solution {
 
     @Override
     public BufferedImage reductionCouleurs(BufferedImage image, int nbCouleurs) {
+        // Histogramme qui contient les couleurs de l'image et leur fréquence
+        Map<Integer, Integer> histogramme = rassemblerCouleurs(image);
+        // Tri décroissant par fréquence des couleurs regroupées
+        List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(histogramme.entrySet());
+        entries.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 
+        // On sélectionne les nbCouleurs premiers regroupements de couleurs
+        Color[] couleursRepresentatives = new Color[nbCouleurs];
+        // On garde les nbCouleurs couleurs représentatives
+        for (int i = 0; i < Math.min(nbCouleurs, entries.size()); i++) {
+            couleursRepresentatives[i] = new Color(entries.get(i).getKey());
+        }
+
+        BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
+        return imageReduite;
+    }
+
+    public Map<Integer, Integer> rassemblerCouleurs(BufferedImage image) {
         // Regroupement des couleurs de l'image par fréquence
         Map<Integer, Integer> histogramme = new HashMap<>();
         int width = image.getWidth();
@@ -55,19 +72,6 @@ public class Solution_v1 extends Solution {
                 histogramme.put(quantizedColor, histogramme.getOrDefault(quantizedColor, 0) + 1);
             }
         }
-        System.out.println(histogramme.size());
-        // Tri décroissant par fréquence des couleurs regroupées
-        List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(histogramme.entrySet());
-        entries.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-
-        // On sélectionne les nbCouleurs premiers regroupements de couleurs
-        Color[] couleursRepresentatives = new Color[nbCouleurs];
-        // On garde les nbCouleurs couleurs représentatives
-        for (int i = 0; i < Math.min(nbCouleurs, entries.size()); i++) {
-            couleursRepresentatives[i] = new Color(entries.get(i).getKey());
-        }
-
-        BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
-        return imageReduite;
+        return histogramme;
     }
 }
