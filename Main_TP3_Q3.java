@@ -6,7 +6,7 @@ import java.util.*;
 import java.awt.Color;
 
 
-public class Main_TP3_Q3_1 {
+public class Main_TP3_Q3 {
     public static void main(String[] args) throws IOException {
         int nbCouleurs = 31;
         String img = "./images_etudiants/animaux/ours";
