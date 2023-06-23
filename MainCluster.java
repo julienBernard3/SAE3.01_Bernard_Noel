@@ -156,8 +156,7 @@ public class MainCluster {
     }
 
     public static Color[] boucle(int height, int width, Color[] couleursRepresentatives, BufferedImage image, int nbCouleurs ){
-        Map<Integer, ArrayList<Integer>> histogramme2 = new HashMap<>();
-
+        Map<Integer, ArrayList<Integer>> histogramme = new HashMap<>();
 
 
         for (int y = 0; y < height; y++) {
@@ -181,20 +180,19 @@ public class MainCluster {
                     }
                 }
 
-                ArrayList<Integer> temp = histogramme2.getOrDefault(closestColor.getRGB(), new ArrayList<>());
+                ArrayList<Integer> temp = histogramme.getOrDefault(closestColor.getRGB(), new ArrayList<>());
                 temp.add(image.getRGB(x, y));
 
 
-                histogramme2.put(closestColor.getRGB(), temp);
+                histogramme.put(closestColor.getRGB(), temp);
 
-//                imageReduite.setRGB(x, y, closestColor.getRGB());
             }
         }
 
         Color[] couleursRepresentatives2 = new Color[nbCouleurs];
         int index = 0;
-        for (Integer couleurRepres: histogramme2.keySet()) {
-            ArrayList<Integer> listeCouleurCorrespondantes = histogramme2.get(couleurRepres);
+        for (Integer couleurRepres: histogramme.keySet()) {
+            ArrayList<Integer> listeCouleurCorrespondantes = histogramme.get(couleurRepres);
 
             // Calculer la couleur moyenne de la liste correspondante
             int sumRed = 0;
@@ -219,12 +217,7 @@ public class MainCluster {
             index++;
         }
 
-
-        for (int i = 0; i < couleursRepresentatives2.length; i++) {
-            Color couleurRepresentative = couleursRepresentatives2[i];
-        }
         return couleursRepresentatives2;
-//        couleursRepresentatives = couleursRepresentatives2;
     }
 
 
