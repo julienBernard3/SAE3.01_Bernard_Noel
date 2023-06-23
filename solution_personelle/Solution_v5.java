@@ -19,6 +19,43 @@ public class Solution_v5 extends Solution{
 
         // Regroupement des couleurs par fréquence
         // On utilise une TreeMap pour trier les couleurs
+        Map<Integer, Integer> histogramme = rassemblerCouleurs(image);
+
+        int tailleEchantillon = image.getWidth() * image.getHeight();
+        // Valeur de l'intervalle de sélection de couleurs
+        int divisionTaille = tailleEchantillon / nbCouleurs;
+
+        // Tableau qui stocke les divisions / intervalles
+        int[] divisions = new int[nbCouleurs];
+        int sommeFrequences = 0;
+        int divisionCourrante = 0;
+
+        // On récupère les couleurs représentatives par intervalle selon la fréquence
+        for (Map.Entry<Integer, Integer> entry : histogramme.entrySet()) {
+            int value = entry.getKey();
+            int frequency = entry.getValue();
+            sommeFrequences += frequency;
+            if (sommeFrequences >= divisionTaille * (divisionCourrante + 1)) {
+                divisions[divisionCourrante] = value;
+                divisionCourrante++;
+            }
+            if (divisionCourrante >= nbCouleurs) {
+                break; // On peut sortir de la boucle après avoir calculé les divisions
+            }
+        }
+
+        Color[] couleursRepresentatives = new Color[nbCouleurs];
+        // On garde les nbCouleurs couleurs représentatives
+        for (int i = 0; i < nbCouleurs; i++) {
+            couleursRepresentatives[i] = new Color(divisions[i]);
+        }
+
+        BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
+        return imageReduite;
+    }
+
+    @Override
+    public Map<Integer, Integer> rassemblerCouleurs(BufferedImage image) {
         Map<Integer, Integer> histogramme = new TreeMap<>();
         int width = image.getWidth();
         int height = image.getHeight();
@@ -52,37 +89,5 @@ public class Solution_v5 extends Solution{
             }
         }
         System.out.println(histogramme.size());
-
-        int tailleEchantillon = image.getWidth() * image.getHeight();
-        // Valeur de l'intervalle de sélection de couleurs
-        int divisionTaille = tailleEchantillon / nbCouleurs;
-
-        // Tableau qui stocke les divisions / intervalles
-        int[] divisions = new int[nbCouleurs];
-        int sommeFrequences = 0;
-        int divisionCourrante = 0;
-
-        // On récupère les couleurs représentatives par intervalle selon la fréquence
-        for (Map.Entry<Integer, Integer> entry : histogramme.entrySet()) {
-            int value = entry.getKey();
-            int frequency = entry.getValue();
-            sommeFrequences += frequency;
-            if (sommeFrequences >= divisionTaille * (divisionCourrante + 1)) {
-                divisions[divisionCourrante] = value;
-                divisionCourrante++;
-            }
-            if (divisionCourrante >= nbCouleurs) {
-                break; // On peut sortir de la boucle après avoir calculé les divisions
-            }
-        }
-
-        Color[] couleursRepresentatives = new Color[nbCouleurs];
-        // On garde les nbCouleurs couleurs représentatives
-        for (int i = 0; i < nbCouleurs; i++) {
-            couleursRepresentatives[i] = new Color(divisions[i]);
-        }
-
-        BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
-        return imageReduite;
     }
 }
