@@ -18,17 +18,7 @@ public class Solution_v2 extends Solution{
     @Override
     public BufferedImage reductionCouleurs(BufferedImage image, int nbCouleurs) {
         // Histogramme qui contient les couleurs de l'image et leur fréquence
-        Map<Integer, Integer> histogramme = new HashMap<>();
-        int width = image.getWidth();
-        int height = image.getHeight();
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                int colorPixel = image.getRGB(x, y);
-
-                histogramme.put(colorPixel, histogramme.getOrDefault(colorPixel, 0) + 1);
-            }
-        }
-
+        Map<Integer, Integer> histogramme = rassemblerCouleurs(image);
         // Tri des couleurs par RGB
         TreeMap<Integer, Integer> sortedMap = new TreeMap<>(histogramme);
 
@@ -63,5 +53,20 @@ public class Solution_v2 extends Solution{
 
         BufferedImage imageReduite = remplacerCouleurs(image, couleursRepresentatives);
         return imageReduite;
+    }
+
+    @Override
+    public Map<Integer, Integer> rassemblerCouleurs(BufferedImage image) {
+        Map<Integer, Integer> histogramme = new HashMap<>();
+        int width = image.getWidth();
+        int height = image.getHeight();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int colorPixel = image.getRGB(x, y);
+
+                histogramme.put(colorPixel, histogramme.getOrDefault(colorPixel, 0) + 1);
+            }
+        }
+        return histogramme;
     }
 }

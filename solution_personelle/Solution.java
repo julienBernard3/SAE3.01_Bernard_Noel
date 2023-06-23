@@ -1,6 +1,7 @@
 package solution_personelle;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
  * Classe abstraite représentant une solution au problème de réduction de couleurs
@@ -14,6 +15,13 @@ public abstract class Solution {
      * @return L'image réduite
      */
     public abstract BufferedImage reductionCouleurs(BufferedImage image, int nbCouleurs);
+
+    /**
+     * Génère un histogramme des couleurs de l'image qui contient les couleurs de l'image (rgb) et leur fréquence
+     * @param image l'image dont on veut générer l'histogramme
+     * @return un histogramme des couleurs de l'image
+     */
+    public abstract Map<Integer, Integer> rassemblerCouleurs(BufferedImage image);
 
     /**
      * Permet de calculer la distance entre deux couleurs
